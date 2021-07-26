@@ -11,7 +11,6 @@ interface MovieApi {
 
     @GET(END_URL)
     suspend fun getMovies(
-
         @Query("page")page:Int
     ): Response<MutableList<MovieResponseItem>>
 

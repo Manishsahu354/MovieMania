@@ -52,7 +52,6 @@ class HomeViewModel @Inject constructor(
                 val response = repository.showMovies(moviePage)
 
                 responseData.value = handleMovieResponse(response)
-//                    NetworkResult.Success(response.body()!!)
 
             } else {
                 responseData.value = NetworkResult.Error("No Internet Connection")
@@ -98,7 +97,7 @@ class HomeViewModel @Inject constructor(
             capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
             capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
             capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> true
-            else -> false;
+            else -> false
         }
     }
 }

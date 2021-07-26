@@ -1,4 +1,4 @@
-package com.manish.moviemania
+package com.manish.moviemania.ui.home
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -7,23 +7,20 @@ import android.view.View
 import android.widget.AbsListView
 import android.widget.ImageView
 import androidx.activity.viewModels
-import androidx.cardview.widget.CardView
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.manish.moviemania.data.model.MovieResponseItem
 import com.manish.moviemania.databinding.ActivityMainBinding
 import com.manish.moviemania.ui.details.DetailsActivity
-import com.manish.moviemania.ui.home.*
 import com.manish.moviemania.util.Constants.QUERY_PAGE_SIZE
 import com.manish.moviemania.util.NetworkResult
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity(),NowShowingItemClickListener, HeaderItemClickListener {
+class MainActivity : AppCompatActivity(), NowShowingItemClickListener, HeaderItemClickListener {
 
     private lateinit var binding: ActivityMainBinding
 
@@ -32,7 +29,7 @@ class MainActivity : AppCompatActivity(),NowShowingItemClickListener, HeaderItem
     private val viewModel by viewModels<HomeViewModel>()
     private val responseList: List<MovieResponseItem> = listOf()
 
-    var isLoading  = false
+    var isLoading = false
     var isLastPage = false
     var isScrolling = false
     var firstTime = true
@@ -49,97 +46,74 @@ class MainActivity : AppCompatActivity(),NowShowingItemClickListener, HeaderItem
 
     }
 
+    private fun setUpRecyclerView() {
+        showingAdapter = ShowingAdapter(this)
+        binding.nowShowingRecyclerview.adapter = showingAdapter
+        binding.nowShowingRecyclerview.addOnScrollListener(this.scrollListener)
+
+        headerRecyclerAdapter = HeaderRecyclerAdapter(responseList, this)
+        binding.headerRecyclerView.adapter = headerRecyclerAdapter
+
+    }
+
     private fun getViewModelData() {
 
-//        viewModel.getMovieData()
-
-        viewModel.responseData.observe(this,{response->
+        viewModel.responseData.observe(this, { response ->
 
             when (response) {
 
                 is NetworkResult.Loading -> {
-                    if (firstTime){
+                    if (firstTime) {
                         showShimmerEffect()
-                    }else{
+                    } else {
                         showProgressBar()
                     }
 
                 }
 
                 is NetworkResult.Success -> {
-                    if (firstTime){
+                    if (firstTime) {
                         hideShimmerEffect()
                         firstTime = false
-                    }else{
+                    } else {
                         hideProgressBar()
                     }
-                    response.data?.let { movieResponse->
+                    response.data?.let { movieResponse ->
                         showingAdapter.differ.submitList(movieResponse)
 
-                        val totalPages = movieResponse.size / QUERY_PAGE_SIZE+2
-                        isLastPage = viewModel.moviePage  == totalPages
+                        val totalPages = movieResponse.size / QUERY_PAGE_SIZE + 2
+                        isLastPage = viewModel.moviePage == totalPages
 
-                        if (isLastPage){
-                            binding.nowShowingRecyclerview.setPadding(0,0,0,0)
+                        if (isLastPage) {
+                            binding.nowShowingRecyclerview.setPadding(0, 0, 0, 0)
                         }
                     }
-
 
                     response.data?.let { headerRecyclerAdapter.setData(it) }
                 }
 
                 is NetworkResult.Error -> {
 
-                    if (firstTime){
+                    if (firstTime) {
                         hideShimmerEffect()
-                    }else{
+                    } else {
                         hideProgressBar()
                     }
 
-                    response.message?.let { message->
+                    response.message?.let { message ->
 
-                        Snackbar.make(binding.root,"An Error Occured: $message", Snackbar.LENGTH_LONG).show()
+                        Snackbar.make(
+                            binding.root,
+                            "An Error Occured: $message",
+                            Snackbar.LENGTH_LONG
+                        ).show()
                     }
                 }
             }
-
-
         })
     }
 
-    private fun setUpRecyclerView() {
-        showingAdapter = ShowingAdapter(this)
-        binding.nowShowingRecyclerview.adapter = showingAdapter
-        binding.nowShowingRecyclerview.addOnScrollListener(this.scrollListener)
-
-        headerRecyclerAdapter = HeaderRecyclerAdapter(responseList,this)
-        binding.headerRecyclerView.adapter = headerRecyclerAdapter
-
-    }
-
-    private fun showShimmerEffect() {
-        binding.headerRecyclerView.showShimmer()
-        binding.nowShowingRecyclerview.showShimmer()
-    }
-
-    private fun hideShimmerEffect() {
-        binding.headerRecyclerView.hideShimmer()
-        binding.nowShowingRecyclerview.hideShimmer()
-    }
-
-    private fun hideProgressBar() {
-        binding.progressBar.visibility = View.INVISIBLE
-        binding.tvNowShowing.visibility = View.VISIBLE
-        isLoading = false
-    }
-
-    private fun showProgressBar() {
-        binding.progressBar.visibility = View.VISIBLE
-        binding.tvNowShowing.visibility = View.GONE
-        isLoading = true
-    }
-
-    private val scrollListener = object :RecyclerView.OnScrollListener(){
+    private val scrollListener = object : RecyclerView.OnScrollListener() {
 
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
             super.onScrolled(recyclerView, dx, dy)
@@ -169,16 +143,51 @@ class MainActivity : AppCompatActivity(),NowShowingItemClickListener, HeaderItem
 
         override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
             super.onScrollStateChanged(recyclerView, newState)
-            if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL){
+            if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
 
-                    isScrolling = true
+                isScrolling = true
 
             }
         }
     }
 
-    override fun onShowingItemClicked(item: MovieResponseItem ,mImageView:ImageView) {
-        val intent = Intent(this,DetailsActivity::class.java)
+
+    private fun showShimmerEffect() {
+        binding.headerRecyclerView.showShimmer()
+        binding.nowShowingRecyclerview.showShimmer()
+    }
+
+    private fun hideShimmerEffect() {
+        binding.headerRecyclerView.hideShimmer()
+        binding.nowShowingRecyclerview.hideShimmer()
+    }
+
+    private fun hideProgressBar() {
+        binding.progressBar.visibility = View.INVISIBLE
+        binding.tvNowShowing.visibility = View.VISIBLE
+        isLoading = false
+    }
+
+    private fun showProgressBar() {
+        binding.progressBar.visibility = View.VISIBLE
+        binding.tvNowShowing.visibility = View.GONE
+        isLoading = true
+    }
+
+
+    override fun onShowingItemClicked(item: MovieResponseItem, mImageView: ImageView) {
+
+        goDetailsActivity(item,mImageView)
+
+    }
+
+    override fun onHeaderItemClicked(item: MovieResponseItem, mImageView: ImageView) {
+
+        goDetailsActivity(item,mImageView)
+    }
+
+    private fun goDetailsActivity(item: MovieResponseItem, mImageView: ImageView) {
+        val intent = Intent(this, DetailsActivity::class.java)
         intent.putExtra("item", item)
         val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
             this,
@@ -186,20 +195,8 @@ class MainActivity : AppCompatActivity(),NowShowingItemClickListener, HeaderItem
             ViewCompat.getTransitionName(mImageView)!!
         )
 
-        startActivity(intent,options.toBundle())
+        startActivity(intent, options.toBundle())
     }
 
-    override fun onHeaderItemClicked(item: MovieResponseItem,mImageView:ImageView) {
 
-        val intent = Intent(this,DetailsActivity::class.java)
-        intent.putExtra("item", item)
-        val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
-            this,
-            mImageView,
-            ViewCompat.getTransitionName(mImageView)!!
-        )
-
-        startActivity(intent,options.toBundle())
-
-    }
 }

@@ -4,7 +4,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -13,7 +12,7 @@ import com.manish.moviemania.R
 import com.manish.moviemania.data.model.MovieResponseItem
 
 class ShowingAdapter(
-    val listener:NowShowingItemClickListener
+     val listener:NowShowingItemClickListener
 ) : RecyclerView.Adapter<ShowingAdapter.ShowingViewHolder>() {
 
 
@@ -60,7 +59,6 @@ class ShowingAdapter(
     class ShowingViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         val responseImage: ImageView = itemView.findViewById(R.id.movieImage)
-        val movieCard: CardView = itemView.findViewById(R.id.movieCard)
 
 
     }

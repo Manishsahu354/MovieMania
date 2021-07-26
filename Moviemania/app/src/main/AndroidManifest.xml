@@ -11,7 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Moviemania">
         <activity android:name=".ui.details.DetailsActivity"></activity>
-        <activity android:name=".MainActivity">
+        <activity android:name=".ui.home.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

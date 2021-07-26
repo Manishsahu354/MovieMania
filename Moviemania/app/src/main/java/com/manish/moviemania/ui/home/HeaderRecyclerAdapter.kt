@@ -4,7 +4,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.manish.moviemania.R
@@ -51,7 +50,6 @@ class HeaderRecyclerAdapter(
     class HeaderRecyclerViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         val responseImage: ImageView = itemView.findViewById(R.id.imageHeaderRecyclerView)
-        val cardStreamItem: CardView = itemView.findViewById(R.id.cardStreamItem)
 
 
     }
