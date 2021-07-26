@@ -6,14 +6,18 @@
 
 <p align="center">  
 This is an android project which provides movie Details. The app uses tvmaze(https://www.tvmaze.com/api) api for movie data. 
-This app is based on modern Android application tech-stacks and MVVM architecture.
+This app is based on modern Android application tech-stacks and MVVM architecture.</br>
+
+- [AppDemo](https://drive.google.com/drive/folders/16S6fYRbybML-azj7ZhiRtO5tMX97lGus)
 </p>
 
-<table>
+<!-- <table>
   <tr>
-    <td><img src="apk.gif" width="200"/></td>
+    <td>
+      <img src="https://drive.google.com/drive/folders/16S6fYRbybML-azj7ZhiRtO5tMX97lGus" width="200"/>
+    </td>
  
-  </tr>
+  </tr> -->
 
  
  </table>
