@@ -30,7 +30,6 @@ This app is based on modern Android application tech-stacks and MVVM architectur
   - LiveData - notify domain layer data to views.
   - Lifecycle - observing data when lifecycle state changes.
   - ViewModel - lifecycle aware UI related data holder.
-- 
 - Architecture
   - MVVM Architecture (View - ViewModel) 
 - [Glide](https://github.com/bumptech/glide) - loading images.
