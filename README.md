@@ -26,6 +26,7 @@ This app is based on modern Android application tech-stacks and MVVM architectur
 - Minimum SDK level 23
 - [Kotlin](https://kotlinlang.org/) based, [Coroutines](https://github.com/Kotlin/kotlinx.coroutines) for asynchronous handling.
 - [Hilt](https://dagger.dev/hilt/) for dependency injection.
+- Pagination with Recyclerview
 - JetPack
   - LiveData - notify domain layer data to views.
   - Lifecycle - observing data when lifecycle state changes.
